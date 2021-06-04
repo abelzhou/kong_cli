@@ -1,4 +1,5 @@
 mod command;
+mod upstream;
 
 fn main() {
    let command_args = command::run();
@@ -11,5 +12,6 @@ fn main() {
    println!("Origin value: {}", command_args.origin);
    println!("Dest value: {}", command_args.dest);
 
+   upstream::replace(command_args);
    command::assert_yes(String::from("hellow!"));
 }
