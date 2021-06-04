@@ -2,12 +2,14 @@ use clap::{App, Arg};
 
 //the struct of args.
 pub struct CommandArgs {
-    target: String,
-    option: String,
-    target_name: String,
-    all: bool,
-    origin: String,
-    dest: String,
+    pub host: String,
+    pub schema: String,
+    pub target: String,
+    pub option: String,
+    pub target_name: String,
+    pub is_all: bool,
+    pub origin: String,
+    pub dest: String,
 }
 
 pub fn run() -> CommandArgs {
@@ -56,6 +58,24 @@ pub fn run() -> CommandArgs {
                 .required_if("OPTION", "replace")
                 .help("Its required when the target bust be replace."),
         )
+        .arg(
+            Arg::with_name("host")
+                .short("h")
+                .long("host")
+                .default_value("127.0.0.1:8001")
+                .takes_value(true)
+                .required(false)
+                .help("The host of kong server.")
+        )
+        .arg(
+            Arg::with_name("schema")
+                .short("s")
+                .long("schema")
+                .takes_value(true)
+                .required(false)
+                .default_value("http")
+                .help("The schema of kong server.")
+        )
         .get_matches();
 
     // // Gets a value for config if supplied by user, or defaults to "default.conf"
@@ -67,24 +87,28 @@ pub fn run() -> CommandArgs {
     let target = matches.value_of("TARGET").unwrap();
     let option = matches.value_of("OPTION").unwrap();
     let target_name = matches.value_of("TARGET_NAME").unwrap_or(&"");
-    println!("Target: {}", target);
-    println!("OPTION: {}", option);
-    println!("TARGET_NAME: {}", target_name);
 
+    let host = matches.value_of("host").unwrap();
+    let schema = matches.value_of("schema").unwrap();
+
+    //replace
+    let is_all = matches.is_present("all");
     let origin = matches.value_of("origin").unwrap_or(&"");
-    let dist = matches.value_of("dist").unwrap_or(&"");
-    println!("ORIGIN: {}", origin);
-    println!("DIST: {}", dist);
+    let dest = matches.value_of("dest").unwrap_or(&"");
+
     
-    let command_arg = CommandArgs{
+    
+    
+    return CommandArgs{
+        host: String::from(host),
+        schema: String::from(schema),
         target: String::from(target),
         option: String::from(option),
         target_name: String::from(target_name),
-        all:false,
-        origin: String::from(""),
-        dest:String::from("")
-    };
-    return command_arg;
+        is_all:is_all,
+        origin: String::from(origin),
+        dest:String::from(dest)
+    }
 
     // Vary the output based on how many times the user used the "verbose" flag
     // (i.e. 'myprog -v -v -v' or 'myprog -vvv' vs 'myprog -v'
