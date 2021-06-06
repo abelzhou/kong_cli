@@ -1,20 +1,16 @@
-use super::command::{assert_yes, CommandArgs};
-use reqwest::header::HeaderMap;
-use serde_json::value::Value;
-use std::collections::HashMap;
+use crate::command::CommandArgs;
 
-pub fn replace(command_args: CommandArgs) {
+pub async fn replace(command_args: CommandArgs) {
     //Get upstream info
-    let schema = CommandArgs.schema;
-    let host = CommandArgs.host;
-    let upstream_name = CommandArgs.target_name;
-    let origin = CommandArgs.origin;
-    let dest = CommandArgs.dest;
+    let schema = command_args.schema;
+    let host = command_args.host;
+    let upstream_name = command_args.target_name;
+    let origin = command_args.origin;
+    let dest = command_args.dest;
 
-    let url = schema + "://" + host + "/upstreams/" + upstream_name + "/targets";
-    let res = reqwest::get(url)
-        .await?
-        .json::<HashMap<String, String>>()
-        .await?;
-    println!("{}",res)
+    let url = schema + "://" + &host + "/upstreams/" + &upstream_name + "/targets";
+    if let Ok(ret) = super::request::get(url).await{
+        println!("{:#?}", &ret);
+    };
+   
 }

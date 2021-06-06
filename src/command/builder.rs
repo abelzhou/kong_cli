@@ -65,7 +65,7 @@ pub fn run() -> CommandArgs {
                 .default_value("127.0.0.1:8001")
                 .takes_value(true)
                 .required(false)
-                .help("The host of kong server.")
+                .help("The host of kong server."),
         )
         .arg(
             Arg::with_name("schema")
@@ -74,7 +74,7 @@ pub fn run() -> CommandArgs {
                 .takes_value(true)
                 .required(false)
                 .default_value("http")
-                .help("The schema of kong server.")
+                .help("The schema of kong server."),
         )
         .get_matches();
 
@@ -96,19 +96,16 @@ pub fn run() -> CommandArgs {
     let origin = matches.value_of("origin").unwrap_or(&"");
     let dest = matches.value_of("dest").unwrap_or(&"");
 
-    
-    
-    
-    return CommandArgs{
+    return CommandArgs {
         host: String::from(host),
         schema: String::from(schema),
         target: String::from(target),
         option: String::from(option),
         target_name: String::from(target_name),
-        is_all:is_all,
+        is_all: is_all,
         origin: String::from(origin),
-        dest:String::from(dest)
-    }
+        dest: String::from(dest),
+    };
 
     // Vary the output based on how many times the user used the "verbose" flag
     // (i.e. 'myprog -v -v -v' or 'myprog -vvv' vs 'myprog -v'
