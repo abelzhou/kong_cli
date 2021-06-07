@@ -1,11 +1,14 @@
-use std::collections::HashMap;
 
-pub fn get(url: String) -> Result<String, ureq::Error> {
-    println!("execute get url {}", &url);
-    // let resp = reqwest::blocking::get(url)?
-    // .json::<HashMap<String, String>>()?;
-    // println!("resp : {:#?}", resp);
-    // return Ok(resp);
-    let resp =  ureq::get(&url).call()?.into_string()?;
+use ureq::Response;
+
+pub fn get(url: &String) -> Result<String, ureq::Error> {
+    // println!("Execute get url {}", url);
+    let resp =  ureq::get(url).call()?.into_string()?;
     Ok(resp)
+}
+
+pub fn post(url: &String, data: &[(&str, &str)]) -> Result<Response, ureq::Error>{
+    // println!("Execute post url {}", url); 
+    let resp = ureq::post(url).send_form(data)?;
+    return Ok(resp);
 }

@@ -12,6 +12,8 @@ fn main() {
    println!("All value: {}", command_args.is_all);
    println!("Origin value: {}", command_args.origin);
    println!("Dest value: {}", command_args.dest);
+   println!();
+   println!();
 
    upstream::replace(command_args);
    // net::get(String::from("http://baidu.com"));
