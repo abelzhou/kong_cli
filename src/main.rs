@@ -1,5 +1,6 @@
 mod command;
 mod upstream;
+mod net;
 
 fn main() {
    let command_args = command::run();
@@ -13,5 +14,6 @@ fn main() {
    println!("Dest value: {}", command_args.dest);
 
    upstream::replace(command_args);
-   command::assert_yes(String::from("hellow!"));
+   // net::get(String::from("http://baidu.com"));
+   // command::assert_yes(String::from("hellow!"));
 }
