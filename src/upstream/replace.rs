@@ -5,20 +5,20 @@ use crate::upstream::TargetList;
 
 use super::get_all_upstream;
 
-pub fn replace(command_args: command::CommandArgs) {
+pub fn replace(command_args: &command::CommandArgs) {
     println!();
     println!();
-    let is_all = &command_args.is_all;
+    let is_all = command_args.is_all;
     match is_all {
         true => {
-            let all_upstream = get_all_upstream(&command_args);
+            let all_upstream = get_all_upstream(command_args);
             for upstream in all_upstream {
                 println!("Scan upstream <{}>...", &upstream.name);
-                replace_one(&command_args, &upstream.name)
+                replace_one(command_args, &upstream.name)
             }
         }
         false => {
-            replace_one(&command_args, &command_args.target_name);
+            replace_one(command_args, &command_args.target_name);
         }
     }
 }

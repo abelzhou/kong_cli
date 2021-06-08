@@ -10,3 +10,4 @@ pub use entity::UpstreamList;
 pub use entity::Upstream;
 pub use change::change_upstream_weight;
 pub use search::get_all_upstream;
+pub use search::search_all_by_ip;

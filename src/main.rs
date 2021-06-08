@@ -12,6 +12,7 @@ fn main() {
    println!("All value: {}", command_args.is_all);
    println!("Origin value: {}", command_args.origin);
    println!("Dest value: {}", command_args.dest);
+   println!("Query value: {}", command_args.query_string);
    println!();
    println!();
 
@@ -29,10 +30,13 @@ fn main() {
 fn upstream_command(command_args: command::CommandArgs) {
    match command_args.option.as_ref() {
       "replace" => {
-         upstream::replace(command_args);
+         upstream::replace(&command_args);
       }
       "add" => {}
       "remove" => {}
+      "search" => {
+         upstream::search_all_by_ip(&command_args);
+      }
       _ => {}
    }
 }
