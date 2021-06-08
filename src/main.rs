@@ -1,6 +1,6 @@
 mod command;
-mod upstream;
 mod net;
+mod upstream;
 
 fn main() {
    let command_args = command::run();
@@ -15,7 +15,24 @@ fn main() {
    println!();
    println!();
 
-   upstream::replace(command_args);
-   // net::get(String::from("http://baidu.com"));
-   // command::assert_yes(String::from("hellow!"));
+   match command_args.target.as_ref() {
+      "upstream" => {
+         upstream_command(command_args);
+      }
+      "server" => {}
+      "route" => {}
+      _ => {}
+   }
+}
+
+//upsrteam command required.
+fn upstream_command(command_args: command::CommandArgs) {
+   match command_args.option.as_ref() {
+      "replace" => {
+         upstream::replace(command_args);
+      }
+      "add" => {}
+      "remove" => {}
+      _ => {}
+   }
 }
