@@ -24,7 +24,6 @@ pub fn replace(command_args: &command::CommandArgs) {
 }
 
 fn replace_one(command_args: &command::CommandArgs, upstream_name: &String) {
-    println!("upstream name {}", upstream_name);
     let url = String::from(&command_args.schema)
         + "://"
         + &command_args.host

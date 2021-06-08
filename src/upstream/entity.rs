@@ -15,6 +15,7 @@ pub struct Target {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UpstreamList {
+    pub next: Option<String>,
     pub data: Vec<Upstream>,
 }
 
