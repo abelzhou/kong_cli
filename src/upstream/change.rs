@@ -3,6 +3,7 @@ use crate::net;
 
 pub fn change_upstream_weight(
     command_args: &command::CommandArgs,
+    upstream_name: &String,
     upstream_target: &String,
     weight: u32,
 ) {
@@ -10,7 +11,7 @@ pub fn change_upstream_weight(
         + "://"
         + &command_args.host
         + "/upstreams/"
-        + &command_args.target_name
+        + upstream_name
         + "/targets";
 
     let change_resp = net::post(
