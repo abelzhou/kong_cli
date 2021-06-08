@@ -44,7 +44,7 @@ fn replace_one(command_args: &command::CommandArgs, upstream_name: &String) {
             continue;
         }
         // println!("The origin while be replaced : {}", origin);
-        command::assert_yes(
+        let assert_ret = command::assert_yes(
             String::from("UPSTREAM[")
                 + upstream_name
                 + "] The origin<"
@@ -53,6 +53,10 @@ fn replace_one(command_args: &command::CommandArgs, upstream_name: &String) {
                 + &command_args.dest
                 + ">",
         );
+
+        if assert_ret == false {
+            continue;
+        }
 
         upstream::change_upstream_weight(&command_args, upstream_name, &command_args.origin, 0);
         upstream::change_upstream_weight(
