@@ -1,7 +1,6 @@
 use crate::command;
 use crate::net;
 use crate::upstream;
-use crate::upstream::TargetList;
 
 use super::get_all_upstream;
 
@@ -36,40 +35,43 @@ fn replace_one(command_args: &command::CommandArgs, upstream_name: &String) {
         return;
     }
 
-    let target_list: TargetList = serde_json::from_str(get_upstream_ret.unwrap().as_str()).unwrap();
-    let mut count = 0;
-    for target in &target_list.data {
-        if target.target != command_args.origin {
-            count = count + 1;
-            continue;
-        }
-        // println!("The origin while be replaced : {}", origin);
-        let assert_ret = command::assert_yes(
-            String::from("UPSTREAM[")
-                + upstream_name
-                + "] The origin<"
-                + &command_args.origin
-                + "> will be replace to<"
-                + &command_args.dest
-                + ">",
-        );
+    let target_list = upstream::search_target_from_upstream(
+        command_args,
+        upstream_name,
+        &command_args.origin,
+        false,
+    );
 
-        if assert_ret == false {
-            continue;
+    match target_list {
+        None => {
+            println!(
+                "UPSTREAM[{}]Not found origin <{}>.",
+                upstream_name, &command_args.origin
+            );
         }
+        Some(targets) => {
+            for target in targets {
+                let assert_ret = command::assert_yes(format!(
+                    "UPSTREAM[{}] The origin <{}> will be replace to <{}>.",
+                    upstream_name, &command_args.origin, &command_args.dest
+                ));
+                if assert_ret == false {
+                    continue;
+                }
 
-        upstream::change_upstream_weight(&command_args, upstream_name, &command_args.origin, 0);
-        upstream::change_upstream_weight(
-            &command_args,
-            upstream_name,
-            &command_args.dest,
-            target.weight,
-        );
-    }
-    if count == target_list.data.len() {
-        println!(
-            "UPSTREAM[{}]Not found origin <{}>.",
-            upstream_name, &command_args.origin
-        );
+                upstream::change_upstream_weight(
+                    &command_args,
+                    upstream_name,
+                    &command_args.origin,
+                    0,
+                );
+                upstream::change_upstream_weight(
+                    &command_args,
+                    upstream_name,
+                    &command_args.dest,
+                    target.weight,
+                );
+            }
+        }
     }
 }

@@ -85,14 +85,17 @@ pub fn run() -> CommandArgs {
                 .required_if("OPTION", "search")
                 .help("Query string."),
         )
+        // .arg(
+        //     Arg::with_name("upstream_target")
+        //         .short("t")
+        //         .long("upstream_target")
+        //         .takes_value(true)
+        //         .required_if("OPTION", "remove")
+        //         .help("Remove upstream target."),
+        // )
         .get_matches();
 
-    // // Gets a value for config if supplied by user, or defaults to "default.conf"
-    // let config = matches.value_of("config").unwrap_or("default.conf");
-    // println!("Value for config: {}", config);
 
-    // Calling .unwrap() is safe here because "INPUT" is required (if "INPUT" wasn't
-    // required we could have used an 'if let' to conditionally get the value)
     let target = matches.value_of("TARGET").unwrap();
     let option = matches.value_of("OPTION").unwrap();
     let target_name = matches.value_of("TARGET_NAME").unwrap_or(&"");
@@ -106,6 +109,8 @@ pub fn run() -> CommandArgs {
     let dest = matches.value_of("dest").unwrap_or(&"");
     //search
     let query_string = matches.value_of("query").unwrap_or(&"");
+    //remove
+    // let upstream_target = matches.value_of("upstream_target").unwrap_or(&"");
 
     return CommandArgs {
         host: String::from(host),
